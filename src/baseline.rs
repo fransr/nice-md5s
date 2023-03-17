@@ -137,10 +137,15 @@ impl EmbarrisinglyParallel for Baseline {}
 /// For maximum performance, the implementation does not guarantee uniformness
 /// of the generated strings.
 pub fn generate_strs<R: Rng, const N: usize>(rng: &mut R) -> [[u8; 32]; N] {
-    const POOL: [u8; 36] = [
+    const POOL: [u8; 95] = [
+        32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47, //16, space to before 0-9
         48, 49, 50, 51, 52, 53, 54, 55, 56, 57, // 0-9
+        58,59,60,61,62,63,64, //7 between 9 and A
+        65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, // A-Z
+        91,92,93,94,95,96, //6, between Z and a
         97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115,
         116, 117, 118, 119, 120, 121, 122, //a-z
+        123,124,125,126, //4 after z
     ];
     [0; N].map(|_| {
         let v: [u8; 32] = unsafe {
@@ -151,7 +156,7 @@ pub fn generate_strs<R: Rng, const N: usize>(rng: &mut R) -> [[u8; 32]; N] {
                 rng.next_u64(),
             ])
         };
-        v.map(|b| POOL[(b % 36) as usize])
+        v.map(|b| POOL[(b % 95) as usize])
     })
 }
 
